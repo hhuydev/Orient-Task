@@ -1,19 +1,28 @@
 const arr = [
   {
-    id: 3,
-    startTime: 110,
-    endTime: 150,
-  },
-  {
     id: 2,
     startTime: 0,
     endTime: 120,
   },
-
   {
-    id: 1,
+    id: 3,
+    startTime: 100,
+    endTime: 160,
+  },
+  {
+    id: 4,
+    startTime: 110,
+    endTime: 150,
+  },
+  {
+    id: 10,
     startTime: 180,
     endTime: 220,
+  },
+  {
+    id: 100,
+    startTime: 190,
+    endTime: 200,
   },
 ];
 
@@ -21,30 +30,26 @@ const handler = (input, duration) => {
   let start = 0;
   let end = 0;
 
-  for (let i = 0; i < input.length; i++) {
-    let flag = true;
+  let flag;
+  for (let i = 0; i < input.length - 1; i++) {
+    flag = true;
     if (input[i].startTime >= input[i].endTime)
       return console.log("The start time is always less than the end time!");
     start = input[i].endTime;
     end = input[i].endTime + duration;
-    for (let j = i + 1; j < input.length; j++) {
+    let j = i + 1;
+    while (j === i + 1) {
       if (
-        (end >= input[j].startTime && end <= input[j].endTime) ||
-        (start >= input[j].startTime && start <= input[j].endTime)
-      ) {
-        // return console.log("Blocked time!");
-        flag = false;
-        continue;
-      } else if (
-        (end >= input[j].startTime && end >= input[j].endTime) ||
-        (start >= input[j].startTime && start >= input[j].endTime)
+        (start > input[j].startTime && start < input[j].endTime) ||
+        (end > input[j].startTime && end < input[j].endTime)
       ) {
         flag = false;
-        continue;
       }
+      j++;
     }
-    return console.log({ startTime: start, endTime: end });
   }
+  if (flag) console.log({ startTime: start, endTime: end });
+  else console.log("Not found");
 };
 
-handler(arr, 30);
+handler(arr, 20);
